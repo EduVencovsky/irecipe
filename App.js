@@ -33,7 +33,7 @@ const ProfileStack = createStackNavigator()
 const ProfileStacks = () => {
   const { t } = useContext(LanguageContext)
   return (
-    <ProfileStack.Navigator initialRouteName="profileoptions" options={{ tabBarVisible: false }}>
+    <ProfileStack.Navigator initialRouteName="profileoptions">
       <ProfileStack.Screen
         options={{ headerShown: false }}
         name="profileOptions"
@@ -130,15 +130,15 @@ const Main = () => {
           component={AuthTabs}
         />
       ) : (
-          <>
-            <MainStack.Screen
-              name="SignInScreen"
-              options={{ headerShown: false }}
-              component={SignInScreen}
-            />
-            <MainStack.Screen name="SignUpScreen" component={SignUpScreen} />
-          </>
-        )}
+        <>
+          <MainStack.Screen
+            name="SignInScreen"
+            options={{ headerShown: false }}
+            component={SignInScreen}
+          />
+          <MainStack.Screen name="SignUpScreen" component={SignUpScreen} />
+        </>
+      )}
     </MainStack.Navigator>
   )
 }

@@ -22,7 +22,7 @@ const Profile = () => {
       <List.Item
         title={t('myrecipes')}
         description={t('createRecipe')}
-        onPress={() => navigation.navigate('myrecipes', {tabBarVisible: false})}
+        onPress={() => navigation.navigate('myrecipes')}
         left={(props) => <List.Icon {...props} icon="book-open" />}
         right={(props) => <List.Icon {...props} icon="chevron-right" />}
       />
