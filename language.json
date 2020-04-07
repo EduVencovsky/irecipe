@@ -1,0 +1,230 @@
+{
+  "login": {
+    "en_US": "Login",
+    "pt_BR": "Login"
+  },
+  "welcome": {
+    "en_US": "Welcome",
+    "pt_BR": "Bem-Vindo"
+  },
+  "loading": {
+    "en_US": "Loading",
+    "pt_BR": "Carregando"
+  },
+  "success": {
+    "en_US": "Success",
+    "pt_BR": "Sucesso"
+  },
+  "recipe": {
+    "en_US": "Recipe",
+    "pt_BR": "Receita"
+  },
+  "recipes": {
+    "en_US": "Recipes",
+    "pt_BR": "Receitas"
+  },
+  "myrecipe": {
+    "en_US": "Recipe",
+    "pt_BR": "Receita"
+  },
+  "myrecipes": {
+    "en_US": "My Recipes",
+    "pt_BR": "Minhas Receitas"
+  },
+  "ingredient": {
+    "en_US": "Ingredient",
+    "pt_BR": "Ingrediente"
+  },
+  "ingredients": {
+    "en_US": "Ingredients",
+    "pt_BR": "Ingredientes"
+  },
+  "myingredients": {
+    "en_US": "My Ingredients",
+    "pt_BR": "Meus Ingredientes"
+  },
+  "myingredientss": {
+    "en_US": "My Ingredients",
+    "pt_BR": "Meus Ingredientes"
+  },
+  "profile": {
+    "en_US": "Profile",
+    "pt_BR": "Perfil"
+  },
+  "user": {
+    "en_US": "User",
+    "pt_BR": "Usuário"
+  },
+  "username": {
+    "en_US": "Username",
+    "pt_BR": "Nome"
+  },
+  "password": {
+    "en_US": "Password",
+    "pt_BR": "Senha"
+  },
+  "registerMessage": {
+    "en_US": "Sign Up Here",
+    "pt_BR": "Cadastre-se"
+  },
+  "forgotPasswordMessage": {
+    "en_US": "Forgot your password?",
+    "pt_BR": "Esqueceu sua senha?"
+  },
+  "my": {
+    "en_US": "My",
+    "pt_BR": "Minha"
+  },
+  "mys": {
+    "en_US": "My",
+    "pt_BR": "Minhas"
+  },
+  "signup": {
+    "en_US": "Sign Up",
+    "pt_BR": "Cadastre-se"
+  },
+  "confirmpassword": {
+    "en_US": "Reenter password",
+    "pt_BR": "Digite a senha novamente"
+  },
+  "email": {
+    "en_US": "E-Mail",
+    "pt_BR": "E-Mail"
+  },
+  "firstname": {
+    "en_US": "First name",
+    "pt_BR": "Nome"
+  },
+  "lastname": {
+    "en_US": "Last name",
+    "pt_BR": "Sobrenome"
+  },
+  "home": {
+    "en_US": "Home",
+    "pt_BR": "Início"
+  },
+  "searchIngredients": {
+    "en_US": "Search Ingredients",
+    "pt_BR": "Pesquisar Ingredientes"
+  },
+  "newrecipe": {
+    "en_US": "New Recipe",
+    "pt_BR": "Nova Receita"
+  },
+  "configuration": {
+    "en_US": "Configuration",
+    "pt_BR": "Configurações"
+  },
+  "configDescription": {
+    "en_US": "Configure theme and language",
+    "pt_BR": "Configure tema e linguagem"
+  },
+  "confirm": {
+    "en_US": "Confirm",
+    "pt_BR": "Confirmar"
+  },
+  "readandaccept": {
+    "en_US": "I read and agreed with the terms",
+    "pt_BR": "Li e aceito os termos de uso"
+  },
+  "blockagree": {
+    "en_US": "You have to agree with the terms",
+    "pt_BR": "É necessário ler e aceitar os termos de uso"
+  },
+  "logout": {
+    "en_US": "Logout",
+    "pt_BR": "Sair"
+  },
+  "name": {
+    "en_US": "Name",
+    "pt_BR": "Nome"
+  },
+  "description": {
+    "en_US": "Description",
+    "pt_BR": "Descrição"
+  },
+  "appliances": {
+    "en_US": "Appliances",
+    "pt_BR": "Utensílios"
+  },
+  "myappliances": {
+    "en_US": "My Appliance",
+    "pt_BR": "Meus Utensílios"
+  },
+  "equipaments": {
+    "en_US": "Equipaments",
+    "pt_BR": "Equipamentos"
+  },
+  "searchAppliances": {
+    "en_US": "Search Appliances",
+    "pt_BR": "Pesquisar Utensílios"
+  },
+  "searchEquipaments": {
+    "en_US": "Search Equipaments",
+    "pt_BR": "Pesquisar Equipamentos"
+  },
+  "searchRecipes": {
+    "en_US": "Search Recipes",
+    "pt_BR": "Pesquisar Receitas"
+  },
+  "describeYourRecipe": {
+    "en_US": "Describe each step of your recipe",
+    "pt_BR": "Descreva cada passo de sua Receita"
+  },
+  "time": {
+    "en_US": "Time",
+    "pt_BR": "Tempo"
+  },
+  "timeMinutes": {
+    "en_US": "Time in Minutes",
+    "pt_BR": "Tempo em Minutos"
+  },
+  "searchByIngredients": {
+    "en_US": "Search by Ingredients",
+    "pt_BR": "Pesquisa por Ingredientes"
+  },
+  "searchByQuantity": {
+    "en_US": "Search by Quantity",
+    "pt_BR": "Pesquisa por Quantidade"
+  },
+  "searchByAppliances": {
+    "en_US": "Search by Appliances",
+    "pt_BR": "Pesquisa por Utensílios"
+  },
+  "search": {
+    "en_US": "Search",
+    "pt_BR": "Buscar"
+  },
+  "moreInfo": {
+    "en_US": "More Info",
+    "pt_BR": "Mais Informações"
+  },
+  "minutes": {
+    "en_US": "Minutes",
+    "pt_BR": "Minutos"
+  },
+  "save": {
+    "en_US": "Save",
+    "pt_BR": "Salvar"
+  },
+  "createRecipe": {
+    "en_US": "Create an recipe",
+    "pt_BR": "Criar uma receita"
+  },
+  "addIngredients": {
+    "en_US": "Add ingredients that I have",
+    "pt_BR": "Adicionar ingridientes que possuo"
+  },
+  "addAppliances": {
+    "en_US": "Add Appliances that I own",
+    "pt_BR": "Adicionar meus utensílios"
+  },
+  "noIngredientFound": {
+    "en_US": "No ingredient found",
+    "pt_BR": "Nenhum ingrediente encontrado"
+  },
+  "noRecipeFound": {
+    "en_US": "No recipe found",
+    "pt_BR": "Nenhuma receita encontrada"
+  }
+}

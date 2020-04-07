@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import * as Yup from 'yup'
 import { Formik } from 'formik'
 import { KeyboardAvoidingView, StyleSheet, View, Image } from 'react-native'
@@ -8,6 +8,8 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 import Button from '../../components/Button'
 import { InputFormik } from '../../components/Formik/TextInput'
+
+import { AuthContext } from '../../context/AuthContext'
 
 const initialValues = {
   username: '',
@@ -22,9 +24,13 @@ const LoginValidation = Yup.object().shape({
 const SignInScreen = () => {
   const theme = useTheme()
   const [source, setSource] = useState({})
+  const { signIn } = useContext(AuthContext)
 
-  const onSubmit = (values) => {
+  const onSubmit = async (values) => {
     console.log(values)
+    await signIn(values)
+      .then((res) => console.log(res.data))
+      .catch((err) => console.log(err.response ? err.response.data : err))
   }
 
   useEffect(() => {
@@ -47,7 +53,7 @@ const SignInScreen = () => {
         initialValues={initialValues}
         validationSchema={LoginValidation}
         onSubmit={onSubmit}>
-        {({ handleSubmit }) => (
+        {() => (
           <>
             <KeyboardAvoidingView style={styles.container} behavior="padding">
               <Image source={source} style={styles.logo} />
@@ -98,7 +104,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   form: {
-    flex: 2,
+    flex: 1,
     width: '90%',
   },
   input: {

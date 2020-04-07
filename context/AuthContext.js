@@ -1,8 +1,8 @@
 import React, { useReducer, useEffect, useContext } from 'react'
-import AsyncStorage from '@react-native-community/async-storage'
+import { useAsyncStorage } from '@react-native-community/async-storage'
 
 import { UserContext } from './UserContext'
-import { getAccessToken } from '../utils/storage'
+import { ACCESS_TOKEN } from '../utils/storage'
 import { signUp, signIn, validateAccessToken } from '../services/authService'
 
 export const AuthContext = React.createContext()
@@ -32,7 +32,7 @@ const authReducer = (prevState, action) => {
 
 const AuthProvider = ({ children }) => {
   const { setUser } = useContext(UserContext)
-
+  const { getItem, setItem } = useAsyncStorage(ACCESS_TOKEN)
   const [state, dispatch] = useReducer(authReducer, {
     isLoading: true,
     IsLoggedIn: true,
@@ -43,37 +43,41 @@ const AuthProvider = ({ children }) => {
     const bootstrapAsync = async () => {
       let userToken
       try {
-        userToken = await getAccessToken()
+        userToken = await getItem()
         let result = await validateAccessToken(userToken)
-
-        console.log(result)
-        // setUser()
+        let user = result.data.user
+        console.log('user', user)
+        setUser(user)
       } catch (e) {
         // Restoring token failed
         // Display some error message
-        console.log(e)
+        console.log('validate error', e)
       }
       dispatch({ type: 'RESTORE_TOKEN', token: userToken })
     }
 
     bootstrapAsync()
-  }, [])
+  }, [setUser])
 
   const authContext = React.useMemo(
     () => ({
       ...state,
       signIn: async (data) => {
-        signIn(data).then((res) => {
-          console.log(res)
+        return signIn(data).then((res) => {
+          let token = res.data.token
+          console.log(token)
           // should get token here
-          dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' })
+          setItem(token)
+          dispatch({ type: 'SIGN_IN', token })
         })
       },
       signUp: async (data) => {
-        signUp(data).then((res) => {
-          console.log(res)
+        return signUp(data).then((res) => {
+          let token = res.data.token
+          console.log(token)
           // should get token here
-          dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' })
+          setItem(token)
+          dispatch({ type: 'SIGN_IN', token })
         })
       },
       signOut: () => dispatch({ type: 'SIGN_OUT' }),

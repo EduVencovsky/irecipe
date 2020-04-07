@@ -10,6 +10,7 @@ import {
   DefaultTheme as PaperDefaultTheme,
   Provider as PaperProvider,
 } from 'react-native-paper'
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import 'react-native-gesture-handler'
 
@@ -19,23 +20,102 @@ import SplashScreen from './views/SplashScreen'
 import SignUpScreen from './views/SignUpScreen'
 import SignInScreen from './views/SignInScreen'
 import HomeScreen from './views/HomeScreen'
+import ProfileScreen from './views/ProfileScreen'
+import MyIngredientsScreen from './views/MyIngredientsScreen'
+import MyRecipesScreen from './views/MyRecipesScreen'
+import MyAppliancesScreen from './views/MyAppliancesScreen'
+import ConfigurationScreen from './views/ConfigurationScreen'
 import colors from './utils/colors'
+import LanguageProvider, { LanguageContext } from './context/LanguageContext'
 
-const LoggedInTab = createMaterialBottomTabNavigator()
+const ProfileStack = createStackNavigator()
 
-const LoggedIn = () => {
+const ProfileStacks = () => {
+  const { t } = useContext(LanguageContext)
   return (
-    <LoggedInTab.Navigator>
-      <LoggedInTab.Screen name="Home" component={HomeScreen} />
-      <LoggedInTab.Screen name="Other Home" component={HomeScreen} />
-    </LoggedInTab.Navigator>
+    <ProfileStack.Navigator initialRouteName="profileoptions" options={{ tabBarVisible: false }}>
+      <ProfileStack.Screen
+        options={{ headerShown: false }}
+        name="profileOptions"
+        component={ProfileScreen}
+      />
+      <ProfileStack.Screen
+        name="myrecipes"
+        options={{ headerTitle: t('myrecipes'), tabBarVisible: false }}
+        component={MyRecipesScreen}
+      />
+      <ProfileStack.Screen
+        name="myingredients"
+        options={{ headerTitle: t('myingredients') }}
+        component={MyIngredientsScreen}
+      />
+      <ProfileStack.Screen
+        name="myappliances"
+        options={{ headerTitle: t('myappliances') }}
+        component={MyAppliancesScreen}
+      />
+      <ProfileStack.Screen
+        name="configuration"
+        options={{ headerTitle: t('configuration') }}
+        component={ConfigurationScreen}
+      />
+    </ProfileStack.Navigator>
+  )
+}
+
+const AuthTab = createMaterialBottomTabNavigator()
+
+const AuthTabs = () => {
+  const { t } = useContext(LanguageContext)
+
+  return (
+    <AuthTab.Navigator initialRouteName="Home" shifting>
+      <AuthTab.Screen
+        name="home"
+        component={HomeScreen}
+        options={{
+          tabBarLabel: t('home'),
+          tabBarIcon: ({ focused, color, size }) => (
+            <MaterialCommunityIcon
+              name={`home${!focused ? '-outline' : ''}`}
+              color={color}
+              size={25}
+            />
+          ),
+        }}
+      />
+      <AuthTab.Screen
+        name="search"
+        component={HomeScreen}
+        options={{
+          tabBarLabel: t('search'),
+          tabBarIcon: ({ focused, color, size }) => (
+            <MaterialCommunityIcon name="magnify" color={color} size={25} />
+          ),
+        }}
+      />
+      <AuthTab.Screen
+        name="profile"
+        component={ProfileStacks}
+        options={{
+          tabBarLabel: t('profile'),
+          tabBarIcon: ({ focused, color, size }) => (
+            <MaterialCommunityIcon
+              name={`account${!focused ? '-outline' : ''}`}
+              color={color}
+              size={25}
+            />
+          ),
+        }}
+      />
+    </AuthTab.Navigator>
   )
 }
 
 const MainStack = createStackNavigator()
 
 const Main = () => {
-  const { isLoading, IsLoggedIn, userToken } = useContext(AuthContext)
+  const { isLoading, userToken } = useContext(AuthContext)
 
   if (isLoading) {
     return <SplashScreen />
@@ -44,17 +124,21 @@ const Main = () => {
   return (
     <MainStack.Navigator>
       {userToken != null ? (
-        <MainStack.Screen name="Home" component={LoggedIn} />
+        <MainStack.Screen
+          options={{ headerShown: false }}
+          name="Home"
+          component={AuthTabs}
+        />
       ) : (
-        <>
-          <MainStack.Screen
-            name="SignInScreen"
-            options={{ headerShown: false }}
-            component={SignInScreen}
-          />
-          <MainStack.Screen name="SignUpScreen" component={SignUpScreen} />
-        </>
-      )}
+          <>
+            <MainStack.Screen
+              name="SignInScreen"
+              options={{ headerShown: false }}
+              component={SignInScreen}
+            />
+            <MainStack.Screen name="SignUpScreen" component={SignUpScreen} />
+          </>
+        )}
     </MainStack.Navigator>
   )
 }
@@ -80,17 +164,19 @@ const CombinedDarkTheme = {
 
 const App = () => {
   return (
-    <UserProvider>
-      <AuthProvider>
-        <SafeAreaProvider>
-          <PaperProvider theme={CombinedDarkTheme}>
-            <NavigationContainer theme={CombinedDarkTheme}>
-              <Main />
-            </NavigationContainer>
-          </PaperProvider>
-        </SafeAreaProvider>
-      </AuthProvider>
-    </UserProvider>
+    <LanguageProvider>
+      <UserProvider>
+        <AuthProvider>
+          <SafeAreaProvider>
+            <PaperProvider theme={CombinedDarkTheme}>
+              <NavigationContainer theme={CombinedDarkTheme}>
+                <Main />
+              </NavigationContainer>
+            </PaperProvider>
+          </SafeAreaProvider>
+        </AuthProvider>
+      </UserProvider>
+    </LanguageProvider>
   )
 }
 
