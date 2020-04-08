@@ -1,12 +1,14 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, useEffect, useLayoutEffect } from 'react'
 import { View, FlatList, StyleSheet, KeyboardAvoidingView } from 'react-native'
-import { Searchbar, List, Title } from 'react-native-paper'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { List, Title } from 'react-native-paper'
 
 import { LanguageContext } from '../../context/LanguageContext'
 
 import { useDebounce } from '../../hooks'
 import { getIngredientsList } from '../../services/ingredients'
 import { useNavigation } from '@react-navigation/native'
+import HeaderSearchBar from '../../components/HeaderSearchBar'
 
 const renderItem = ({ item }) => (
   <List.Item
@@ -23,16 +25,16 @@ const MyIngredients = () => {
   const [searchIngredients, setSearchIngredients] = useState([])
   const debouncedQuery = useDebounce(searchQuery, 1000, false)
 
-  // useEffect(() => {
-  //   const parent = navigation.dangerouslyGetParent()
-  //   parent.setOptions({
-  //     tabBarVisible: false,
-  //   })
-  //   return () =>
-  //     parent.setOptions({
-  //       tabBarVisible: true,
-  //     })
-  // }, [])
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      header: ({ navigation }) => (
+        <HeaderSearchBar
+          {...{ searchQuery, setSearchQuery, navigation }}
+          hideOnBlur
+        />
+      ),
+    })
+  }, [navigation, searchQuery, t])
 
   useEffect(() => {
     getIngredientsList(debouncedQuery).then((res) => {
@@ -45,13 +47,9 @@ const MyIngredients = () => {
 
   return (
     <KeyboardAvoidingView style={styles.container}>
-      <Searchbar
-        placeholder={t('search')}
-        onChangeText={setSearchQuery}
-        value={searchQuery}
-      />
       {searchIngredients.length > 0 ? (
         <FlatList
+          keyboardShouldPersistTaps="always"
           style={styles.container}
           data={searchIngredients}
           renderItem={renderItem}
