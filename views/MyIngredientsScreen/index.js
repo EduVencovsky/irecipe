@@ -5,10 +5,9 @@ import { List, Title, Checkbox } from 'react-native-paper'
 
 import { LanguageContext } from '../../context/LanguageContext'
 
-import { useDebounce } from '../../hooks'
+import { useDebounce, useSearchBarHeader } from '../../hooks'
 import { getIngredientsList } from '../../services/ingredients'
 import { useNavigation } from '@react-navigation/native'
-import HeaderSearchBar from '../../components/HeaderSearchBar'
 
 const isChecked = (id, idList) =>
   idList.map((x) => x._id.toString()).includes(id.toString())
@@ -16,18 +15,12 @@ const isChecked = (id, idList) =>
 const MyIngredients = () => {
   const { t } = useContext(LanguageContext)
   const navigation = useNavigation()
-  const [searchQuery, setSearchQuery] = useState('')
+  const [openState, searchState] = useSearchBarHeader()
+  const [isOpen, setIsOpen] = openState
+  const [searchQuery, setSearchQuery] = searchState
   const [searchIngredients, setSearchIngredients] = useState([])
   const [selectedIngredients, setSelectedIngredients] = useState([])
   const debouncedQuery = useDebounce(searchQuery, 500, false)
-
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      header: () => (
-        <HeaderSearchBar {...{ searchQuery, setSearchQuery, navigation }} />
-      ),
-    })
-  }, [navigation, searchQuery, t])
 
   useEffect(() => {
     getIngredientsList(debouncedQuery).then((res) => {
@@ -66,11 +59,25 @@ const MyIngredients = () => {
   }
   return (
     <KeyboardAvoidingView style={styles.container}>
-      {searchIngredients.length > 0 ? (
+      {isOpen ? (
+        searchIngredients.length > 0 ? (
+          <FlatList
+            keyboardShouldPersistTaps="always"
+            style={styles.container}
+            data={searchIngredients}
+            renderItem={renderItem}
+            keyExtractor={(item) => item._id.toString()}
+          />
+        ) : (
+          <View style={styles.noDataContainer}>
+            <Title>{t('noIngredientFound')}</Title>
+          </View>
+        )
+      ) : selectedIngredients.length > 0 ? (
         <FlatList
           keyboardShouldPersistTaps="always"
           style={styles.container}
-          data={searchIngredients}
+          data={selectedIngredients}
           renderItem={renderItem}
           keyExtractor={(item) => item._id.toString()}
         />
@@ -88,8 +95,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   noDataContainer: {
-    width: '100%',
-    height: 300,
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },

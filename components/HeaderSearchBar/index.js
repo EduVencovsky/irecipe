@@ -20,10 +20,15 @@ const AnimatedIconButton = Animated.createAnimatedComponent(
   )),
 )
 
-const HeaderSearchBar = ({ setSearchQuery, searchQuery, navigation }) => {
+const HeaderSearchBar = ({
+  setSearchQuery,
+  searchQuery,
+  navigation,
+  isOpen,
+  setIsOpen,
+}) => {
   const { t } = useContext(LanguageContext)
   const [width] = useState(new Animated.Value(0))
-  const [isOpen, setIsOpen] = useState(false)
   const inputRef = useRef(null)
 
   useEffect(() => {
