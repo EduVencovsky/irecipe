@@ -1,5 +1,11 @@
-import React, { useContext, useRef, useState } from 'react'
-import { View, TextInput, Animated } from 'react-native'
+import React, {
+  useContext,
+  useRef,
+  useState,
+  useEffect,
+  useCallback,
+} from 'react'
+import { View, TextInput, Animated, Keyboard } from 'react-native'
 import { IconButton, Divider } from 'react-native-paper'
 
 import { LanguageContext } from '../../context/LanguageContext'
@@ -14,35 +20,42 @@ const AnimatedIconButton = Animated.createAnimatedComponent(
   )),
 )
 
-const HeaderSearchBar = ({
-  setSearchQuery,
-  searchQuery,
-  navigation,
-}) => {
+const HeaderSearchBar = ({ setSearchQuery, searchQuery, navigation }) => {
   const { t } = useContext(LanguageContext)
   const [width] = useState(new Animated.Value(0))
   const [isOpen, setIsOpen] = useState(false)
   const inputRef = useRef(null)
 
-  const toogleSearchBar = () => {
-    const newValue = isOpen ? 0 : 1
+  useEffect(() => {
+    const blurSearchText = () => {
+      closeSearchBar()
+    }
+    Keyboard.addListener('keyboardDidHide', blurSearchText)
+    return () => {
+      Keyboard.removeListener('keyboardDidHide', blurSearchText)
+    }
+  }, [setSearchQuery, closeSearchBar])
 
+  const closeSearchBar = useCallback(() => {
+    setSearchQuery('')
+    inputRef.current.blur()
+    setIsOpen(false)
     Animated.timing(width, {
-      toValue: newValue,
+      toValue: 0,
       duration: 500,
       useNativeDriver: false,
-    }).start(() => {
-      setIsOpen((prev) => {
-        const open = !prev
-        if (open) {
-          inputRef.current.focus()
-        } else {
-          inputRef.current.blur()
-        }
-        return open
-      })
-    })
-  }
+    }).start()
+  }, [width, setSearchQuery])
+
+  const openSearchBar = useCallback(() => {
+    inputRef.current.focus()
+    setIsOpen(true)
+    Animated.timing(width, {
+      toValue: 1,
+      duration: 500,
+      useNativeDriver: false,
+    }).start()
+  }, [width])
 
   return (
     <>
@@ -51,8 +64,7 @@ const HeaderSearchBar = ({
           justifyContent: 'flex-end',
           alignItems: 'center',
           flexDirection: 'row',
-        }}
-      >
+        }}>
         <AnimatedIconButton
           style={{
             opacity: width.interpolate({
@@ -75,7 +87,7 @@ const HeaderSearchBar = ({
         <AnimatedIconButton
           size={25}
           icon="arrow-left"
-          onPress={toogleSearchBar}
+          onPress={closeSearchBar}
           style={{
             opacity: width.interpolate({
               inputRange: [0, 1],
@@ -86,7 +98,7 @@ const HeaderSearchBar = ({
         <AnimatedIconButton
           size={25}
           icon="magnify"
-          onPress={toogleSearchBar}
+          onPress={openSearchBar}
           style={{
             opacity: width.interpolate({
               inputRange: [0, 1],
