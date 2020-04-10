@@ -26,6 +26,7 @@ const HeaderSearchBar = ({
   navigation,
   isOpen,
   setIsOpen,
+  goBack = true,
 }) => {
   const { t } = useContext(LanguageContext)
   const [width] = useState(new Animated.Value(0))
@@ -70,25 +71,27 @@ const HeaderSearchBar = ({
           alignItems: 'center',
           flexDirection: 'row',
         }}>
-        <AnimatedIconButton
-          style={{
-            opacity: width.interpolate({
-              inputRange: [0, 1],
-              outputRange: [1, 0],
-            }),
-            flex: width.interpolate({
-              inputRange: [0, 1],
-              outputRange: [1, 0],
-            }),
-            width: width.interpolate({
-              inputRange: [0, 1],
-              outputRange: [50, 0],
-            }),
-          }}
-          onPress={() => navigation.goBack()}
-          size={25}
-          icon="arrow-left"
-        />
+        {goBack && (
+          <AnimatedIconButton
+            style={{
+              opacity: width.interpolate({
+                inputRange: [0, 1],
+                outputRange: [1, 0],
+              }),
+              flex: width.interpolate({
+                inputRange: [0, 1],
+                outputRange: [1, 0],
+              }),
+              width: width.interpolate({
+                inputRange: [0, 1],
+                outputRange: [50, 0],
+              }),
+            }}
+            onPress={() => navigation.goBack()}
+            size={25}
+            icon="arrow-left"
+          />
+        )}
         <AnimatedIconButton
           size={25}
           icon="arrow-left"
