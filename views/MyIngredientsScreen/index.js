@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useContext } from 'react'
 import { useNavigation } from '@react-navigation/native'
-import { Text } from 'react-native-paper'
 
 import SelectIngredients from '../SelectIngredients/index'
 import { updateUserIngredients } from '../../services/ingredients'
