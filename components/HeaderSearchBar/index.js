@@ -50,7 +50,7 @@ const HeaderSearchBar = ({
       duration: 500,
       useNativeDriver: false,
     }).start()
-  }, [width, setSearchQuery])
+  }, [width, setSearchQuery, setIsOpen])
 
   const openSearchBar = useCallback(() => {
     inputRef.current.focus()
@@ -60,7 +60,7 @@ const HeaderSearchBar = ({
       duration: 500,
       useNativeDriver: false,
     }).start()
-  }, [width])
+  }, [width, setIsOpen])
 
   return (
     <>

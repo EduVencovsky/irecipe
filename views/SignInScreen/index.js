@@ -30,7 +30,13 @@ const SignInScreen = () => {
     console.log(values)
     await signIn(values)
       .then((res) => console.log(res.data))
-      .catch((err) => console.log(err.response ? err.response.data : err))
+      .catch((err) => {
+        if (err.response && err.response.data) {
+          alert(err.response.data)
+        } else {
+          alert(err)
+        }
+      })
   }
 
   useEffect(() => {

@@ -226,5 +226,9 @@
   "noRecipeFound": {
     "en_US": "No recipe found",
     "pt_BR": "Nenhuma receita encontrada"
+  },
+  "selectedItems": {
+    "en_US": "Selected Items",
+    "pt_BR": "Itens selecionados"
   }
 }

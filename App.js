@@ -1,4 +1,7 @@
 import React, { useContext } from 'react'
+import {
+  Text
+} from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
@@ -7,6 +10,7 @@ import {
   DefaultTheme as NavigationDefaultTheme,
 } from '@react-navigation/native'
 import {
+  useTheme,
   DefaultTheme as PaperDefaultTheme,
   Provider as PaperProvider,
 } from 'react-native-paper'
@@ -67,9 +71,12 @@ const AuthTab = createMaterialBottomTabNavigator()
 
 const AuthTabs = () => {
   const { t } = useContext(LanguageContext)
-
+  const theme = useTheme()
   return (
-    <AuthTab.Navigator initialRouteName="Home" shifting>
+    <AuthTab.Navigator 
+    initialRouteName="Home"
+      // activeColor={theme.colors.accent}
+      shifting>
       <AuthTab.Screen
         name="home"
         component={HomeScreen}
@@ -90,7 +97,11 @@ const AuthTabs = () => {
         options={{
           tabBarLabel: t('search'),
           tabBarIcon: ({ focused, color, size }) => (
-            <MaterialCommunityIcon name="magnify" color={color} size={25} />
+            <MaterialCommunityIcon
+              name="magnify"
+              color={color}
+              size={25}
+            />
           ),
         }}
       />
@@ -130,15 +141,15 @@ const Main = () => {
           component={AuthTabs}
         />
       ) : (
-        <>
-          <MainStack.Screen
-            name="SignInScreen"
-            options={{ headerShown: false }}
-            component={SignInScreen}
-          />
-          <MainStack.Screen name="SignUpScreen" component={SignUpScreen} />
-        </>
-      )}
+          <>
+            <MainStack.Screen
+              name="SignInScreen"
+              options={{ headerShown: false }}
+              component={SignInScreen}
+            />
+            <MainStack.Screen name="SignUpScreen" component={SignUpScreen} />
+          </>
+        )}
     </MainStack.Navigator>
   )
 }

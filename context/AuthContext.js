@@ -47,11 +47,12 @@ const AuthProvider = ({ children }) => {
         let result = await validateAccessToken(userToken)
         let user = result.data.user
         console.log('user', user)
+        console.log('userToken', userToken)
         setUser(user)
       } catch (e) {
-        // Restoring token failed
         // Display some error message
         console.log('validate error', e)
+        userToken = null
       }
       dispatch({ type: 'RESTORE_TOKEN', token: userToken })
     }

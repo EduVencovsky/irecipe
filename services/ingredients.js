@@ -11,3 +11,9 @@ export const getIngredientsById = async (_id) => {
     'http://127.0.0.1:3000/api/ingredient' + (_id ? `/${_id}` : ''),
   )
 }
+
+export const updateUserIngredients = async (userId, ingredients) => {
+  return axios.put(`http://127.0.0.1:3000/api/user/ingredients/${userId}`, {
+    ingredients,
+  })
+}
