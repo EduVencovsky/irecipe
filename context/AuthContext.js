@@ -47,6 +47,9 @@ const AuthProvider = ({ children }) => {
         let result = await validateAccessToken(userToken)
         let user = result.data.user
         console.log('user', user)
+        if (!user || !userToken) {
+          throw Error()
+        }
         console.log('userToken', userToken)
         setUser(user)
       } catch (e) {
