@@ -32,7 +32,6 @@ const SelectIngredients = ({ ingredients = [], onSave }) => {
 
   useEffect(() => {
     getIngredientsList(debouncedQuery).then((res) => {
-      console.log('data', res.data)
       if (Array.isArray(res.data)) {
         setSearchIngredients(res.data)
       }

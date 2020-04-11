@@ -1,10 +1,12 @@
-import React, { useContext } from 'react'
-import { Dimensions } from 'react-native'
+import React, { useEffect, useContext, useState } from 'react'
+import { Dimensions, StyleSheet } from 'react-native'
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
-import SelectIngredientsQuantity from '../SelectIngredientsQuantity'
-import { useTheme } from 'react-native-paper'
+import { useNavigation } from '@react-navigation/native'
+import { useTheme, FAB } from 'react-native-paper'
+
 import { LanguageContext } from '../../context/LanguageContext'
+import MyRecipesIngredientsQuantity from '../MyRecipesIngredientsQuantityScreen'
 
 const initialLayout = { width: Dimensions.get('window').width }
 
@@ -12,62 +14,104 @@ const tabs = {
   ingredients: {
     icon: 'food-variant',
     title: 'ingredients',
-    component: SelectIngredientsQuantity,
+    selectScreen: 'myRecipesIngredients',
+    component: MyRecipesIngredientsQuantity,
   },
   appliances: {
     icon: 'stove',
     title: 'appliances',
-    component: SelectIngredientsQuantity,
+    selectScreen: 'myRecipesAppliances',
+    component: MyRecipesIngredientsQuantity,
   },
   description: {
     icon: 'book-open',
     title: 'description',
-    component: SelectIngredientsQuantity,
+    component: MyRecipesIngredientsQuantity,
   },
 }
 
 const CreateRecipe = () => {
   const { t } = useContext(LanguageContext)
   const theme = useTheme()
-  const [index, setIndex] = React.useState(0)
-  const [routes] = React.useState([
-    { key: 'ingredients', title: t('ingredients') },
-    { key: 'appliances', title: t('appliances') },
-    { key: 'description', title: t('description') },
-  ])
+  const navigation = useNavigation()
+  const [index, setIndex] = useState(0)
+  const [isSwiping, setIsSwiping] = React.useState(false)
+  const [routes] = React.useState(Object.keys(tabs).map((x) => ({ key: x })))
 
-  const renderScene = SceneMap({
-    ingredients: SelectIngredientsQuantity,
-    appliances: SelectIngredientsQuantity,
-    description: SelectIngredientsQuantity,
-  })
+  const [ingredients, setIngredients] = useState([])
+  const [appliances, setAppliances] = useState([])
 
+  const onSave = (selectedItem) => {
+    const setState = index === 0 ? setIngredients : setAppliances
+    setState(selectedItem)
+  }
+
+  const navigateTo = () => {
+    const screen = Object.values(tabs)[index].selectScreen
+    const data = index === 0 ? { ingredients } : { appliances }
+    navigation.navigate(screen, {
+      onSave,
+      ...data,
+    })
+  }
+
+  console.log('ingredients', ingredients)
   return (
-    <TabView
-      renderTabBar={(props) => (
-        <TabBar
-          {...props}
-          renderIcon={({ route, focused, color }) => (
-            <MaterialCommunityIcon
-              name={tabs[route.key].icon}
-              color={theme.colors.primary}
-              size={25}
-            />
-          )}
-          renderLabel={() => {}}
-          labelStyle={{ color: theme.colors.primary }}
-          indicatorStyle={{ backgroundColor: theme.colors.primary }}
-          style={{
-            backgroundColor: theme.colors.background,
-          }}
-        />
-      )}
-      navigationState={{ index, routes }}
-      renderScene={renderScene}
-      onIndexChange={setIndex}
-      initialLayout={initialLayout}
-    />
+    <>
+      <TabView
+        onSwipeEnd={() => setIsSwiping(false)}
+        onSwipeStart={() => setIsSwiping(true)}
+        navigationState={{ index, routes }}
+        onIndexChange={setIndex}
+        initialLayout={initialLayout}
+        renderScene={({ route }) => {
+          switch (route.key) {
+            case 'ingredients':
+              return (
+                <MyRecipesIngredientsQuantity
+                  {...{ ingredients, setIngredients }}
+                />
+              )
+            default:
+              return null
+          }
+        }}
+        renderTabBar={(props) => (
+          <TabBar
+            {...props}
+            renderLabel={() => {}}
+            pressColor={theme.colors.primary}
+            labelStyle={{ color: theme.colors.primary }}
+            indicatorStyle={{ backgroundColor: theme.colors.primary }}
+            style={{ backgroundColor: theme.colors.background }}
+            renderIcon={({ route, focused, color }) => (
+              <MaterialCommunityIcon
+                name={tabs[route.key].icon}
+                color={theme.colors.primary}
+                size={25}
+              />
+            )}
+          />
+        )}
+      />
+      <FAB
+        visible={!isSwiping && index !== 2}
+        style={styles.fab}
+        icon="magnify"
+        color="#fff"
+        onPress={navigateTo}
+      />
+    </>
   )
 }
+
+const styles = StyleSheet.create({
+  fab: {
+    position: 'absolute',
+    margin: 16,
+    right: 0,
+    bottom: 0,
+  },
+})
 
 export default CreateRecipe

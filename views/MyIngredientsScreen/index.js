@@ -7,6 +7,7 @@ import { UserContext } from '../../context/UserContext'
 
 const MyIngredients = () => {
   const navigation = useNavigation()
+
   const { user, setUser } = useContext(UserContext)
 
   const onSave = (selectedIngredients) => {

@@ -26,46 +26,56 @@ import MyRecipesScreen from './views/MyRecipesScreen'
 import CreateRecipeScreen from './views/CreateRecipeScreen'
 import MyAppliancesScreen from './views/MyAppliancesScreen'
 import ConfigurationScreen from './views/ConfigurationScreen'
+import MyRecipesIngredientsScreen from './views/MyRecipesIngredientsScreen'
+import MyRecipesAppliancesScreen from './views/MyRecipesAppliancesScreen'
 import colors from './utils/colors'
 import LanguageProvider, { LanguageContext } from './context/LanguageContext'
 
-const ProfileStack = createStackNavigator()
+const AuthStack = createStackNavigator()
 
-const ProfileStacks = () => {
+const AuthStacks = () => {
   const { t } = useContext(LanguageContext)
   return (
-    <ProfileStack.Navigator initialRouteName="profileoptions">
-      <ProfileStack.Screen
+    <AuthStack.Navigator initialRouteName="tabs">
+      <AuthStack.Screen
         options={{ headerShown: false }}
-        name="profileOptions"
-        component={ProfileScreen}
+        name="tabs"
+        component={AuthTabs}
       />
-      <ProfileStack.Screen
+      <AuthStack.Screen
         name="myrecipes"
         options={{ headerTitle: t('myrecipes') }}
         component={MyRecipesScreen}
       />
-      <ProfileStack.Screen
+      <AuthStack.Screen
         name="createRecipe"
         options={{ headerTitle: t('createRecipe') }}
         component={CreateRecipeScreen}
       />
-      <ProfileStack.Screen
+      <AuthStack.Screen
         name="myingredients"
         options={{ headerTitle: t('myingredients') }}
         component={MyIngredientsScreen}
       />
-      <ProfileStack.Screen
+      <AuthStack.Screen
         name="myappliances"
         options={{ headerTitle: t('myappliances') }}
         component={MyAppliancesScreen}
       />
-      <ProfileStack.Screen
+      <AuthStack.Screen
         name="configuration"
         options={{ headerTitle: t('configuration') }}
         component={ConfigurationScreen}
       />
-    </ProfileStack.Navigator>
+      <AuthStack.Screen
+        name="myRecipesIngredients"
+        component={MyRecipesIngredientsScreen}
+      />
+      <AuthStack.Screen
+        name="myRecipesAppliances"
+        component={MyRecipesAppliancesScreen}
+      />
+    </AuthStack.Navigator>
   )
 }
 
@@ -102,7 +112,7 @@ const AuthTabs = () => {
       />
       <AuthTab.Screen
         name="profile"
-        component={ProfileStacks}
+        component={ProfileScreen}
         options={{
           tabBarLabel: t('profile'),
           tabBarIcon: ({ focused, color, size }) => (
@@ -120,7 +130,7 @@ const AuthTabs = () => {
 
 const MainStack = createStackNavigator()
 
-const Main = () => {
+const MainStacks = () => {
   const { isLoading, userToken } = useContext(AuthContext)
 
   if (isLoading) {
@@ -133,18 +143,18 @@ const Main = () => {
         <MainStack.Screen
           options={{ headerShown: false }}
           name="Home"
-          component={AuthTabs}
+          component={AuthStacks}
         />
       ) : (
-        <>
-          <MainStack.Screen
-            name="SignInScreen"
-            options={{ headerShown: false }}
-            component={SignInScreen}
-          />
-          <MainStack.Screen name="SignUpScreen" component={SignUpScreen} />
-        </>
-      )}
+          <>
+            <MainStack.Screen
+              name="SignInScreen"
+              options={{ headerShown: false }}
+              component={SignInScreen}
+            />
+            <MainStack.Screen name="SignUpScreen" component={SignUpScreen} />
+          </>
+        )}
     </MainStack.Navigator>
   )
 }
@@ -170,19 +180,19 @@ const CombinedDarkTheme = {
 
 const App = () => {
   return (
-    <LanguageProvider>
-      <UserProvider>
-        <AuthProvider>
-          <SafeAreaProvider>
-            <PaperProvider theme={CombinedDarkTheme}>
-              <NavigationContainer theme={CombinedDarkTheme}>
-                <Main />
-              </NavigationContainer>
-            </PaperProvider>
-          </SafeAreaProvider>
-        </AuthProvider>
-      </UserProvider>
-    </LanguageProvider>
+    <NavigationContainer theme={CombinedDarkTheme}>
+      <LanguageProvider>
+        <UserProvider>
+          <AuthProvider>
+            <SafeAreaProvider>
+              <PaperProvider theme={CombinedDarkTheme}>
+                <MainStacks />
+              </PaperProvider>
+            </SafeAreaProvider>
+          </AuthProvider>
+        </UserProvider>
+      </LanguageProvider>
+    </NavigationContainer>
   )
 }
 
