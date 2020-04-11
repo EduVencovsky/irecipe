@@ -1,4 +1,5 @@
 import useDebounce from './useDebounce'
 import useSearchBarHeader from './useSearchBarHeader'
+import useDidUpdateEffect from './useDidUpdateEffect'
 
-export { useDebounce, useSearchBarHeader }
+export { useDebounce, useSearchBarHeader, useDidUpdateEffect }

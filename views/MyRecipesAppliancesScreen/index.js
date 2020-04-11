@@ -9,7 +9,7 @@ const MyRecipesAppliances = () => {
   const { params = {} } = route || {}
 
   const onSave = (selectedAppliances) => {
-    if (params.onSave && typeof params.onSave === 'function'){
+    if (params.onSave && typeof params.onSave === 'function') {
       params.onSave(selectedAppliances)
     }
     navigation.goBack()

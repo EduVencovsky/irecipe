@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+import { StatusBar } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
@@ -27,6 +28,7 @@ import CreateRecipeScreen from './views/CreateRecipeScreen'
 import MyAppliancesScreen from './views/MyAppliancesScreen'
 import ConfigurationScreen from './views/ConfigurationScreen'
 import MyRecipesIngredientsScreen from './views/MyRecipesIngredientsScreen'
+import MyRecipesIngredientsQuantityScreen from './views/MyRecipesIngredientsQuantityScreen'
 import MyRecipesAppliancesScreen from './views/MyRecipesAppliancesScreen'
 import colors from './utils/colors'
 import LanguageProvider, { LanguageContext } from './context/LanguageContext'
@@ -70,6 +72,10 @@ const AuthStacks = () => {
       <AuthStack.Screen
         name="myRecipesIngredients"
         component={MyRecipesIngredientsScreen}
+      />
+      <AuthStack.Screen
+        name="myRecipesIngredientsQuantity"
+        component={MyRecipesIngredientsQuantityScreen}
       />
       <AuthStack.Screen
         name="myRecipesAppliances"
@@ -146,20 +152,20 @@ const MainStacks = () => {
           component={AuthStacks}
         />
       ) : (
-          <>
-            <MainStack.Screen
-              name="SignInScreen"
-              options={{ headerShown: false }}
-              component={SignInScreen}
-            />
-            <MainStack.Screen name="SignUpScreen" component={SignUpScreen} />
-          </>
-        )}
+        <>
+          <MainStack.Screen
+            name="SignInScreen"
+            options={{ headerShown: false }}
+            component={SignInScreen}
+          />
+          <MainStack.Screen name="SignUpScreen" component={SignUpScreen} />
+        </>
+      )}
     </MainStack.Navigator>
   )
 }
 
-const CombinedDarkTheme = {
+const CombinedTheme = {
   ...PaperDefaultTheme,
   ...NavigationDefaultTheme,
   colors: {
@@ -180,12 +186,16 @@ const CombinedDarkTheme = {
 
 const App = () => {
   return (
-    <NavigationContainer theme={CombinedDarkTheme}>
+    <NavigationContainer theme={CombinedTheme}>
       <LanguageProvider>
         <UserProvider>
           <AuthProvider>
             <SafeAreaProvider>
-              <PaperProvider theme={CombinedDarkTheme}>
+              <PaperProvider theme={CombinedTheme}>
+                <StatusBar
+                  barStyle="dark-content"
+                  backgroundColor={colors.primary3}
+                />
                 <MainStacks />
               </PaperProvider>
             </SafeAreaProvider>

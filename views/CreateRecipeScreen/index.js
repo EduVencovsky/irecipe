@@ -1,12 +1,13 @@
 import React, { useEffect, useContext, useState } from 'react'
 import { Dimensions, StyleSheet } from 'react-native'
-import { TabView, TabBar, SceneMap } from 'react-native-tab-view'
+import { TabView, TabBar } from 'react-native-tab-view'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { useNavigation } from '@react-navigation/native'
 import { useTheme, FAB } from 'react-native-paper'
 
 import { LanguageContext } from '../../context/LanguageContext'
-import MyRecipesIngredientsQuantity from '../MyRecipesIngredientsQuantityScreen'
+import MyRecipesIngredientsList from '../MyRecipesIngredientsListScreen'
+import MyRecipesAppliancesList from '../MyRecipesAppliancesListScreen'
 
 const initialLayout = { width: Dimensions.get('window').width }
 
@@ -15,18 +16,15 @@ const tabs = {
     icon: 'food-variant',
     title: 'ingredients',
     selectScreen: 'myRecipesIngredients',
-    component: MyRecipesIngredientsQuantity,
   },
   appliances: {
     icon: 'stove',
     title: 'appliances',
     selectScreen: 'myRecipesAppliances',
-    component: MyRecipesIngredientsQuantity,
   },
   description: {
     icon: 'book-open',
     title: 'description',
-    component: MyRecipesIngredientsQuantity,
   },
 }
 
@@ -56,6 +54,8 @@ const CreateRecipe = () => {
   }
 
   console.log('ingredients', ingredients)
+  console.log('appliances', appliances)
+
   return (
     <>
       <TabView
@@ -68,9 +68,13 @@ const CreateRecipe = () => {
           switch (route.key) {
             case 'ingredients':
               return (
-                <MyRecipesIngredientsQuantity
+                <MyRecipesIngredientsList
                   {...{ ingredients, setIngredients }}
                 />
+              )
+            case 'appliances':
+              return (
+                <MyRecipesAppliancesList {...{ appliances, setAppliances }} />
               )
             default:
               return null

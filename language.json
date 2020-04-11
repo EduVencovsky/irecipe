@@ -223,6 +223,10 @@
     "en_US": "No ingredient found",
     "pt_BR": "Nenhum ingrediente encontrado"
   },
+  "noApplianceFound": {
+    "en_US": "No appliance found",
+    "pt_BR": "Nenhum utensílio encontrado"
+  },
   "noRecipeFound": {
     "en_US": "No recipe found",
     "pt_BR": "Nenhuma receita encontrada"
@@ -231,8 +235,40 @@
     "en_US": "Selected Items",
     "pt_BR": "Itens selecionados"
   },
-  "quantityRequired" : {
-    "en_US": "Quantity Required",
-    "pt_BR": "Quantidade Requirida"
+  "clickToAddQuantity" : {
+    "en_US": "Click to add quantity",
+    "pt_BR": "Click para adicionar quantidade"
+  },
+  "magnifyToSerach1": {
+    "en_US": "Use",
+    "pt_BR": "Use"
+  },
+  "magnifyToSerach2": {
+    "en_US": "to search",
+    "pt_BR": "para pesquisar"
+  },
+  "decimalSeparator": {
+    "en_US": ".",
+    "pt_BR": ","
+  },
+  "quantity": {
+    "en_US": "Quantity",
+    "pt_BR": "Quantidade"
+  },
+  "unityMeasurement":{
+    "en_US": "Unity measurement",
+    "pt_BR": "Unidade de medida"
+  },
+  "unit": {
+    "en_US": "Units",
+    "pt_BR": "Unidades"
+  },
+  "liter": {
+    "en_US": "Liters",
+    "pt_BR": "Litros"
+  },
+  "gram": {
+    "en_US": "Grams",
+    "pt_BR": "Gramas"
   }
 }

@@ -10,9 +10,14 @@ import {
 } from 'react-native-paper'
 
 import { LanguageContext } from '../../context/LanguageContext'
-
-import { useDebounce, useSearchBarHeader } from '../../hooks'
+import {
+  useDebounce,
+  useSearchBarHeader,
+  useDidUpdateEffect,
+} from '../../hooks'
 import { getIngredientsList } from '../../services/ingredients'
+import UndrawDiet from '../../svg/UndrawDiet'
+import MagnifySearchText from '../../components/MagnifySearchText'
 
 const isChecked = (id, idList) =>
   idList.map((x) => x._id.toString()).includes(id.toString())
@@ -24,9 +29,14 @@ const SelectIngredients = ({ ingredients = [], onSave }) => {
   const [openState, searchState] = useSearchBarHeader()
   const [isOpen, setIsOpen] = openState
   const [searchQuery, setSearchQuery] = searchState
+  const [hasChanged, setHasChanged] = useState(false)
 
   const [searchIngredients, setSearchIngredients] = useState([])
   const [selectedIngredients, setSelectedIngredients] = useState(ingredients)
+
+  useDidUpdateEffect(() => {
+    setHasChanged(true)
+  }, [selectedIngredients])
 
   const debouncedQuery = useDebounce(searchQuery, 200, false)
 
@@ -97,11 +107,15 @@ const SelectIngredients = ({ ingredients = [], onSave }) => {
         </>
       ) : (
         <View style={styles.noDataContainer}>
-          <Title>{t('noIngredientFound')}</Title>
+          <Title style={styles.noDataText}>{t('noIngredientFound')}</Title>
+          <View style={styles.svg}>
+            <UndrawDiet />
+          </View>
+          <MagnifySearchText />
         </View>
       )}
       <FAB
-        visible={!isOpen && selectedIngredients.length > 0}
+        visible={!isOpen && hasChanged}
         style={styles.fab}
         icon="check"
         color="#fff"
@@ -120,11 +134,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  noDataText: {
+    textAlign: 'center',
+  },
   fab: {
     position: 'absolute',
     margin: 16,
     right: 0,
     bottom: 0,
+  },
+  svg: {
+    width: '100%',
+    paddingHorizontal: 30,
   },
 })
 
