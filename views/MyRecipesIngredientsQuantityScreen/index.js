@@ -16,13 +16,14 @@ const MyRecipesIngredientsQuantity = ({ ingredients = [], setIngredients }) => {
         {index === 0 && <Divider />}
         <List.Item
           title={item.name}
-          description={item.quantity}
+          descriptionStyle={item.quantity ? {} : { color: theme.colors.accent }}
+          description={item.quantity || t('quantityRequired')}
+          onPress={() => console.log('open edit quantity', item)}
           right={(props) => (
             <List.Icon
               icon="scale-balance"
               {...props}
               color={item.quantity ? props.color : theme.colors.accent}
-              // onPress={() => onSelectItem(item, isSelected)}
             />
           )}
         />
@@ -43,10 +44,10 @@ const MyRecipesIngredientsQuantity = ({ ingredients = [], setIngredients }) => {
           />
         </>
       ) : (
-        <View style={styles.noDataContainer}>
-          <Title>{t('noIngredientFound')}</Title>
-        </View>
-      )}
+          <View style={styles.noDataContainer}>
+            <Title>{t('noIngredientFound')}</Title>
+          </View>
+        )}
     </KeyboardAvoidingView>
   )
 }

@@ -230,5 +230,9 @@
   "selectedItems": {
     "en_US": "Selected Items",
     "pt_BR": "Itens selecionados"
+  },
+  "quantityRequired" : {
+    "en_US": "Quantity Required",
+    "pt_BR": "Quantidade Requirida"
   }
 }
