@@ -25,6 +25,7 @@ import {
   HelperText,
   Button,
   Subheading,
+  List,
 } from 'react-native-paper'
 import BottomSheet from 'reanimated-bottom-sheet'
 import ImagePicker from 'react-native-image-picker'
@@ -66,6 +67,7 @@ const CreateRecipe = () => {
 
   const [ingredients, setIngredients] = useState([])
   const [appliances, setAppliances] = useState([])
+  const [directions, setDirections] = useState([])
 
   const onSave = (selectedItem) => {
     const setState = index === 0 ? setIngredients : setAppliances
@@ -223,11 +225,15 @@ const CreateRecipe = () => {
           </View>
 
           <View style={styles.sections}>
-            <Subheading>{t('directions')}</Subheading>
-            <TextInput label={t('direction')} multiline />
-              <Button onPress={() => {}} style={{width: '100%'}} icon="plus">
-                {t('addDirection')}
-              </Button>
+            <List.Item
+              title={t('directions')}
+              onPress={() => navigation.navigate('myRecipesDirections')}
+              description={`${directions.length} ${t('itemsSelected')}`}
+              left={(props) => (
+                <List.Icon {...props} icon="format-list-numbered" />
+              )}
+              right={(props) => <List.Icon {...props} icon="chevron-right" />}
+            />
           </View>
         </View>
       </ScrollView>

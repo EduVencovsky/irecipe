@@ -294,5 +294,9 @@
   "addDirection": {
     "en_US": "Add direction",
     "pt_BR": "Adicionar instrução"
-  }
+  },
+  "itemsSelected": {
+    "en_US": "Items selected",
+    "pt_BR": "Itens selecionados"
+  },
 }

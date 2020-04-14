@@ -30,6 +30,8 @@ import ConfigurationScreen from './views/ConfigurationScreen'
 import MyRecipesIngredientsScreen from './views/MyRecipesIngredientsScreen'
 import MyRecipesIngredientsQuantityScreen from './views/MyRecipesIngredientsQuantityScreen'
 import MyRecipesAppliancesScreen from './views/MyRecipesAppliancesScreen'
+import MyRecipesDirectionsScreen from './views/MyRecipesDirectionsScreen'
+
 import colors from './utils/colors'
 import LanguageProvider, { LanguageContext } from './context/LanguageContext'
 
@@ -80,6 +82,10 @@ const AuthStacks = () => {
       <AuthStack.Screen
         name="myRecipesAppliances"
         component={MyRecipesAppliancesScreen}
+      />
+      <AuthStack.Screen
+        name="myRecipesDirections"
+        component={MyRecipesDirectionsScreen}
       />
     </AuthStack.Navigator>
   )
