@@ -35,7 +35,6 @@ const MyRecipesIngredientsQuantity = () => {
     const selectedUnityMeasurement = measurements.find(
       (x) => x._id.toString() === unityMeasurement.toString(),
     )
-    console.log('selectedUnityMeasurement', selectedUnityMeasurement)
     onSave({ ...item, quantity, unityMeasurement: selectedUnityMeasurement })
     navigation.goBack()
   }

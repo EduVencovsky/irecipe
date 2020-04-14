@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { View, FlatList, StyleSheet, KeyboardAvoidingView } from 'react-native'
+import { View, FlatList, StyleSheet } from 'react-native'
 import { List, Title, Divider, Checkbox, useTheme } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 
@@ -7,7 +7,11 @@ import { LanguageContext } from '../../context/LanguageContext'
 import UndrawDiet from '../../svg/UndrawDiet'
 import MagnifySearchText from '../../components/MagnifySearchText'
 
-const MyRecipesIngredientsList = ({ ingredients = [], setIngredients }) => {
+const MyRecipesIngredientsList = ({
+  ingredients = [],
+  setIngredients,
+  onFlatListScroll,
+}) => {
   const { t } = useContext(LanguageContext)
   const theme = useTheme()
   const navigation = useNavigation()
@@ -27,7 +31,7 @@ const MyRecipesIngredientsList = ({ ingredients = [], setIngredients }) => {
   }
 
   const renderItem = ({ item, index }) => {
-    return (
+    return item._id ? (
       <>
         {index === 0 && <Divider />}
         <List.Item
@@ -58,19 +62,24 @@ const MyRecipesIngredientsList = ({ ingredients = [], setIngredients }) => {
         />
         <Divider />
       </>
+    ) : (
+      <View style={styles.dummy} />
     )
   }
 
   return (
-    <KeyboardAvoidingView style={styles.container}>
+    <View style={styles.container}>
       {ingredients.length > 0 ? (
         <>
           <List.Subheader>{t('selectedItems')}</List.Subheader>
           <FlatList
+            onScroll={onFlatListScroll}
             style={styles.container}
-            data={ingredients}
+            data={[...ingredients, {}]}
             renderItem={renderItem}
-            keyExtractor={(item) => item._id.toString()}
+            keyExtractor={(item, i) =>
+              item._id ? item._id.toString() : i.toString()
+            }
           />
         </>
       ) : (
@@ -82,7 +91,7 @@ const MyRecipesIngredientsList = ({ ingredients = [], setIngredients }) => {
           <MagnifySearchText />
         </View>
       )}
-    </KeyboardAvoidingView>
+    </View>
   )
 }
 
@@ -110,6 +119,10 @@ const styles = StyleSheet.create({
   },
   listItemCheckbox: {
     justifyContent: 'center',
+  },
+  dummy: {
+    height: 100,
+    width: 100,
   },
 })
 

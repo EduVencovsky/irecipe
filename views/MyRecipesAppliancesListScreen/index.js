@@ -6,7 +6,11 @@ import { LanguageContext } from '../../context/LanguageContext'
 import UndrawBarbecue from '../../svg/UndrawBarbecue'
 import MagnifySearchText from '../../components/MagnifySearchText'
 
-const MyRecipesAppliancesList = ({ appliances = [], setAppliances }) => {
+const MyRecipesAppliancesList = ({
+  appliances = [],
+  setAppliances,
+  onFlatListScroll,
+}) => {
   const { t } = useContext(LanguageContext)
   const theme = useTheme()
 
@@ -17,7 +21,7 @@ const MyRecipesAppliancesList = ({ appliances = [], setAppliances }) => {
   }
 
   const renderItem = ({ item, index }) => {
-    return (
+    return item._id ? (
       <>
         {index === 0 && <Divider />}
         <List.Item
@@ -33,6 +37,8 @@ const MyRecipesAppliancesList = ({ appliances = [], setAppliances }) => {
         />
         <Divider />
       </>
+    ) : (
+      <View style={styles.dummy} />
     )
   }
 
@@ -42,10 +48,13 @@ const MyRecipesAppliancesList = ({ appliances = [], setAppliances }) => {
         <>
           <List.Subheader>{t('selectedItems')}</List.Subheader>
           <FlatList
+            onScroll={onFlatListScroll}
             style={styles.container}
-            data={appliances}
+            data={[...appliances, {}]}
             renderItem={renderItem}
-            keyExtractor={(item) => item._id.toString()}
+            keyExtractor={(item, i) =>
+              item._id ? item._id.toString() : i.toString()
+            }
           />
         </>
       ) : (
@@ -82,6 +91,10 @@ const styles = StyleSheet.create({
   svg: {
     width: '100%',
     paddingHorizontal: 30,
+  },
+  dummy: {
+    height: 100,
+    width: 100,
   },
 })
 

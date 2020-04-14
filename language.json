@@ -270,5 +270,29 @@
   "gram": {
     "en_US": "Grams",
     "pt_BR": "Gramas"
+  },
+  "selectImage": {
+    "en_US": "Select Image",
+    "pt_BR": "Selecionar Imagem"
+  },
+  "changeImage": {
+    "en_US": "Change Image",
+    "pt_BR": "Trocar Imagem"
+  },
+  "deleteImage": {
+    "en_US": "Delete Image",
+    "pt_BR": "Apagar Imagem"
+  },
+  "directions": {
+    "en_US": "Directions",
+    "pt_BR": "Modo de preparo"
+  },
+  "direction": {
+    "en_US": "Direction",
+    "pt_BR": "Instrução"
+  },
+  "addDirection": {
+    "en_US": "Add direction",
+    "pt_BR": "Adicionar instrução"
   }
 }
