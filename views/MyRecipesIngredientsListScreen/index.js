@@ -17,16 +17,15 @@ const MyRecipesIngredientsList = ({
   const navigation = useNavigation()
 
   const onQuantitySave = (item) => {
-    console.log('onQuantitySave', item)
-    setIngredients((prev) =>
-      prev.map((x) =>
+    setIngredients(
+      ingredients.map((x) =>
         x._id.toString() === item._id.toString() ? { ...x, ...item } : x,
       ),
     )
   }
   const onDeselectItem = (item) => {
-    setIngredients((prev) =>
-      prev.filter((x) => x._id.toString() !== item._id.toString()),
+    setIngredients(
+      ingredients.filter((x) => x._id.toString() !== item._id.toString()),
     )
   }
 

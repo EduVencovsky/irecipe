@@ -310,5 +310,13 @@
   "delete": {
     "en_US": "Delete",
     "pt_BR": "Excluir"
+  },
+  "directionsEmpty": {
+    "en_US": "Directions cannot be empty",
+    "pt_BR": "Instruções não podem ser vazias"
+  },
+  "preparationTime": {
+    "en_US": "Preparation Time",
+    "pt_BR": "Tempo de preparo"
   }
 }

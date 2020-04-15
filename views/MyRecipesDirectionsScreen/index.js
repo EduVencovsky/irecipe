@@ -72,8 +72,14 @@ const MyRecipesDirections = () => {
   }, [navigation, t, isActionsOpen])
 
   const handleSave = () => {
-    onSave(selectedDirections)
-    navigation.goBack()
+    const notValid = selectedDirections.some((x) => !x.value || !x.value.trim())
+
+    if (notValid) {
+      alert(t('directionsEmpty'))
+    } else {
+      onSave(selectedDirections)
+      navigation.goBack()
+    }
   }
 
   const handleDelete = (dragId) => {

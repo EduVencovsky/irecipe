@@ -24,11 +24,13 @@ import {
   TextInput,
   HelperText,
   Button,
-  Subheading,
+  IconButton,
   List,
 } from 'react-native-paper'
 import BottomSheet from 'reanimated-bottom-sheet'
 import ImagePicker from 'react-native-image-picker'
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
 
 import { LanguageContext } from '../../context/LanguageContext'
 import MyRecipesIngredientsList from '../MyRecipesIngredientsListScreen'
@@ -65,9 +67,36 @@ const CreateRecipe = () => {
   const headerHeight = useHeaderHeight()
   const screenHeight = useWindowDimensions().height
 
-  const [ingredients, setIngredients] = useState([])
-  const [appliances, setAppliances] = useState([])
-  const [directions, setDirections] = useState([])
+  const formik = useFormik({
+    initialValues: {
+      ingredients: [],
+      appliances: [],
+      directions: [],
+      time: '',
+      description: '',
+      name: '',
+    },
+  })
+
+  const { values, setFieldValue } = formik
+
+  const ingredients = values.ingredients
+  const appliances = values.appliances
+  const directions = values.directions
+
+  const setIngredients = (value) => setFieldValue('ingredients', value)
+  const setAppliances = (value) => setFieldValue('appliances', value)
+  const setDirections = (value) => setFieldValue('directions', value)
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => <IconButton icon="check" onPress={handleSubmit} />,
+    })
+  }, [navigation])
+
+  const handleSubmit = () => {
+    console.log('submit')
+  }
 
   const onSave = (selectedItem) => {
     const setState = index === 0 ? setIngredients : setAppliances
@@ -123,8 +152,8 @@ const CreateRecipe = () => {
     })
   }
 
-  const saveDirections = (directions) => {
-    setDirections(directions.map((x, i) => ({ ...x, order: i })))
+  const saveDirections = (newDirections) => {
+    setDirections(newDirections.map((x, i) => ({ ...x, order: i })))
   }
 
   const renderContent = () => (
@@ -221,15 +250,29 @@ const CreateRecipe = () => {
           </View>
 
           <View style={styles.sections}>
-            <TextInput label={t('name')} />
+            <TextInput
+              value={values.name}
+              onChangeText={(text) => setFieldValue('name', text)}
+              label={t('name')}
+            />
           </View>
 
           <View style={styles.sections}>
-            <TextInput label={t('description')} multiline />
+            <TextInput
+              value={values.description}
+              onChangeText={(text) => setFieldValue('description', text)}
+              label={t('description')}
+              multiline
+            />
           </View>
 
           <View style={styles.sections}>
-            <TextInput label={t('time')} keyboardType="decimal-pad" />
+            <TextInput
+              value={values.time}
+              onChangeText={(text) => setFieldValue('time', text)}
+              label={t('preparationTime')}
+              keyboardType="decimal-pad"
+            />
             <HelperText>{t('timeMinutes')}</HelperText>
           </View>
 
@@ -290,7 +333,7 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   bottomSheetHeaderDummy: {
-    height: 48,
+    height: 56,
     width: '100%',
   },
   image: {
