@@ -299,4 +299,16 @@
     "en_US": "Items selected",
     "pt_BR": "Itens selecionados"
   },
+  "edit": {
+    "en_US": "Edit",
+    "pt_BR": "Editar"
+  },
+  "drag": {
+    "en_US": "Drag",
+    "pt_BR": "Mover"
+  },
+  "delete": {
+    "en_US": "Delete",
+    "pt_BR": "Excluir"
+  }
 }

@@ -123,6 +123,10 @@ const CreateRecipe = () => {
     })
   }
 
+  const saveDirections = (directions) => {
+    setDirections(directions.map((x, i) => ({ ...x, order: i })))
+  }
+
   const renderContent = () => (
     <View
       style={[
@@ -215,9 +219,9 @@ const CreateRecipe = () => {
               </Button>
             )}
           </View>
+
           <View style={styles.sections}>
-            <TextInput label={t('time')} keyboardType="decimal-pad" />
-            <HelperText>{t('timeMinutes')}</HelperText>
+            <TextInput label={t('name')} />
           </View>
 
           <View style={styles.sections}>
@@ -225,9 +229,19 @@ const CreateRecipe = () => {
           </View>
 
           <View style={styles.sections}>
+            <TextInput label={t('time')} keyboardType="decimal-pad" />
+            <HelperText>{t('timeMinutes')}</HelperText>
+          </View>
+
+          <View style={styles.sections}>
             <List.Item
               title={t('directions')}
-              onPress={() => navigation.navigate('myRecipesDirections')}
+              onPress={() =>
+                navigation.navigate('myRecipesDirections', {
+                  onSave: saveDirections,
+                  directions,
+                })
+              }
               description={`${directions.length} ${t('itemsSelected')}`}
               left={(props) => (
                 <List.Icon {...props} icon="format-list-numbered" />
