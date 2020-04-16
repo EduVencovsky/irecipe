@@ -37,9 +37,9 @@ const MyRecipesIngredientsList = ({
           title={item.name}
           descriptionStyle={item.quantity ? {} : { color: theme.colors.accent }}
           description={
-            item.quantity && item.unityMeasurement
+            item.quantity && item.measurement
               ? `${item.quantity} ${t(
-                  item.unityMeasurement.name.toLowerCase(),
+                  item.measurement.name.toLowerCase(),
                 )}`
               : t('clickToAddQuantity')
           }

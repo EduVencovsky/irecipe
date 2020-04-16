@@ -12,11 +12,11 @@ import {
   useWindowDimensions,
   Keyboard,
   ScrollView,
+  KeyboardAvoidingView,
   Image,
 } from 'react-native'
 import { TabView, TabBar } from 'react-native-tab-view'
 import { useNavigation } from '@react-navigation/native'
-import { useHeaderHeight } from '@react-navigation/stack'
 import {
   useTheme,
   FAB,
@@ -32,9 +32,10 @@ import ImagePicker from 'react-native-image-picker'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 
-import { LanguageContext } from '../../context/LanguageContext'
 import MyRecipesIngredientsList from '../MyRecipesIngredientsListScreen'
 import MyRecipesAppliancesList from '../MyRecipesAppliancesListScreen'
+import { LanguageContext } from '../../context/LanguageContext'
+import { updateRecipe } from '../../services/recipe'
 
 const initialLayout = { width: Dimensions.get('window').width }
 
@@ -64,7 +65,6 @@ const CreateRecipe = () => {
 
   const [image, setImage] = useState(null)
 
-  const headerHeight = useHeaderHeight()
   const screenHeight = useWindowDimensions().height
 
   const formik = useFormik({
@@ -76,41 +76,76 @@ const CreateRecipe = () => {
       description: '',
       name: '',
     },
+    validateOnChange: false,
+    onSubmit: (values) =>
+      updateRecipe(values)
+        .then(() => navigation.goBack())
+        .catch((res) => alert(res.data)),
+    validationSchema: Yup.object().shape({
+      time: Yup.string().required(),
+      description: Yup.string().required(),
+      name: Yup.string().required(),
+      directions: Yup.array().min(1, 'should select one appliance'),
+      appliances: Yup.array().min(1, 'should select one appliance'),
+      ingredients: Yup.array()
+        .of(
+          Yup.object().shape({
+            name: Yup.string().required(),
+            quantity: Yup.number().required(),
+          }),
+        )
+        .required('should select one ingredient'),
+    }),
   })
 
-  const { values, setFieldValue } = formik
+  const {
+    values,
+    errors,
+    touched,
+    setFieldValue,
+    setFieldTouched,
+    handleSubmit,
+  } = formik
 
   const ingredients = values.ingredients
   const appliances = values.appliances
   const directions = values.directions
 
-  const setIngredients = (value) => setFieldValue('ingredients', value)
-  const setAppliances = (value) => setFieldValue('appliances', value)
-  const setDirections = (value) => setFieldValue('directions', value)
+  const setIngredients = useCallback(
+    (value) => setFieldValue('ingredients', value),
+    [setFieldValue],
+  )
+  const setAppliances = useCallback(
+    (value) => setFieldValue('appliances', value),
+    [setFieldValue],
+  )
+  const setDirections = useCallback(
+    (value) => setFieldValue('directions', value),
+    [setFieldValue],
+  )
 
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => <IconButton icon="check" onPress={handleSubmit} />,
     })
-  }, [navigation])
+  }, [navigation, handleSubmit])
 
-  const handleSubmit = () => {
-    console.log('submit')
-  }
+  const onSave = useCallback(
+    (selectedItem) => {
+      const setState = index === 0 ? setIngredients : setAppliances
+      setState(selectedItem)
+    },
+    [setIngredients, setAppliances, index],
+  )
 
-  const onSave = (selectedItem) => {
-    const setState = index === 0 ? setIngredients : setAppliances
-    setState(selectedItem)
-  }
-
-  const navigateTo = () => {
+  const navigateTo = useCallback(() => {
     const screen = Object.values(tabs)[index].selectScreen
     const data = index === 0 ? { ingredients } : { appliances }
     navigation.navigate(screen, {
       onSave,
       ...data,
     })
-  }
+  }, [index, ingredients, appliances, navigation, onSave])
 
   const bottomSheetSnapTo = useCallback(
     (value) => {
@@ -121,22 +156,25 @@ const CreateRecipe = () => {
     [bottomSheetRef],
   )
 
-  const onTabPress = ({ route }) => {
-    Keyboard.dismiss()
-    if (
-      !isBottomSheetOpen ||
-      route.key.toString() === Object.keys(tabs)[index].toString()
-    ) {
-      bottomSheetSnapTo(isBottomSheetOpen ? 1 : 2)
-      setIsBottomSheetOpen(!isBottomSheetOpen)
-    }
-  }
+  const onTabPress = useCallback(
+    ({ route }) => {
+      Keyboard.dismiss()
+      if (
+        !isBottomSheetOpen ||
+        route.key.toString() === Object.keys(tabs)[index].toString()
+      ) {
+        bottomSheetSnapTo(isBottomSheetOpen ? 0 : 1)
+        setIsBottomSheetOpen(!isBottomSheetOpen)
+      }
+    },
+    [isBottomSheetOpen, bottomSheetSnapTo, index],
+  )
 
-  const onFlatListScroll = (e) => {
+  const onFlatListScroll = useCallback((e) => {
     setShowCloseFab(e.nativeEvent.contentOffset.y < 10)
-  }
+  }, [])
 
-  const showImagePicker = () => {
+  const showImagePicker = useCallback(() => {
     ImagePicker.showImagePicker((response) => {
       if (response.didCancel) {
         console.log('User cancelled image picker')
@@ -150,11 +188,14 @@ const CreateRecipe = () => {
         setImage(source)
       }
     })
-  }
+  }, [])
 
-  const saveDirections = (newDirections) => {
-    setDirections(newDirections.map((x, i) => ({ ...x, order: i })))
-  }
+  const saveDirections = useCallback(
+    (newDirections) => {
+      setDirections(newDirections.map((x, i) => ({ ...x, order: i })))
+    },
+    [setDirections],
+  )
 
   const renderContent = () => (
     <View
@@ -200,7 +241,7 @@ const CreateRecipe = () => {
         )}
       />
       <FAB
-        visible={!isSwiping && index !== 2}
+        visible={!isSwiping}
         style={styles.fabRight}
         icon="magnify"
         color="#fff"
@@ -212,7 +253,7 @@ const CreateRecipe = () => {
         icon="arrow-collapse-down"
         color="#fff"
         onPress={() => {
-          bottomSheetSnapTo(isBottomSheetOpen ? 1 : 2)
+          bottomSheetSnapTo(isBottomSheetOpen ? 0 : 1)
           setIsBottomSheetOpen(!isBottomSheetOpen)
         }}
       />
@@ -253,27 +294,43 @@ const CreateRecipe = () => {
             <TextInput
               value={values.name}
               onChangeText={(text) => setFieldValue('name', text)}
+              onBlur={() => setFieldTouched('name')}
               label={t('name')}
+              error={errors.name && touched.name}
             />
+            {errors.name && touched.name ? (
+              <HelperText type="error">{errors.name}</HelperText>
+            ) : null}
           </View>
 
           <View style={styles.sections}>
             <TextInput
               value={values.description}
               onChangeText={(text) => setFieldValue('description', text)}
+              onBlur={() => setFieldTouched('description')}
               label={t('description')}
               multiline
+              error={errors.description && touched.description}
             />
+            {errors.description && touched.description ? (
+              <HelperText type="error">{errors.description}</HelperText>
+            ) : null}
           </View>
 
           <View style={styles.sections}>
             <TextInput
               value={values.time}
               onChangeText={(text) => setFieldValue('time', text)}
+              onBlur={() => setFieldTouched('time')}
               label={t('preparationTime')}
               keyboardType="decimal-pad"
+              error={errors.time && touched.time}
             />
-            <HelperText>{t('timeMinutes')}</HelperText>
+            {errors.time && touched.time ? (
+              <HelperText type="error">{errors.time}</HelperText>
+            ) : (
+              <HelperText>{t('timeMinutes')}</HelperText>
+            )}
           </View>
 
           <View style={styles.sections}>
@@ -296,13 +353,13 @@ const CreateRecipe = () => {
       </ScrollView>
       <View style={styles.bottomSheetHeaderDummy} />
       <BottomSheet
-        initialSnap={1}
+        initialSnap={0}
         onOpenEnd={() => setIsBottomSheetOpen(true)}
         onCloseEnd={() => setIsBottomSheetOpen(false)}
         enabledContentGestureInteraction={!isBottomSheetOpen}
         ref={bottomSheetRef}
         renderContent={renderContent}
-        snapPoints={[0, 48, screenHeight - headerHeight]}
+        snapPoints={[48, screenHeight]}
       />
     </View>
   )

@@ -29,14 +29,6 @@ const SignInScreen = () => {
   const onSubmit = async (values) => {
     console.log(values)
     await signIn(values)
-      .then((res) => console.log(res.data))
-      .catch((err) => {
-        if (err.response && err.response.data) {
-          alert(err.response.data)
-        } else {
-          alert(err)
-        }
-      })
   }
 
   useEffect(() => {

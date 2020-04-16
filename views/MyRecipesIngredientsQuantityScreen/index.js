@@ -21,8 +21,8 @@ const MyRecipesIngredientsQuantity = () => {
   const { item = {}, onSave } = params
   const [measurements, setMeasurements] = useState([])
   const [quantity, setQuantity] = useState(item.quantity || '')
-  const [unityMeasurement, setUnityMeasurement] = useState(
-    item.unityMeasurement ? item.unityMeasurement._id : '',
+  const [measurement, setmeasurement] = useState(
+    item.measurement ? item.measurement._id : '',
   )
 
   useEffect(() => {
@@ -32,10 +32,15 @@ const MyRecipesIngredientsQuantity = () => {
   }, [navigation, item])
 
   const handleOnSave = () => {
-    const selectedUnityMeasurement = measurements.find(
-      (x) => x._id.toString() === unityMeasurement.toString(),
+    const selectedmeasurement = measurements.find(
+      (x) => x._id.toString() === measurement.toString(),
     )
-    onSave({ ...item, quantity, unityMeasurement: selectedUnityMeasurement })
+    const parsedQuantity = parseFloat(quantity.toString().replace(',', '.'))
+    onSave({
+      ...item,
+      quantity: parsedQuantity,
+      measurement: selectedmeasurement,
+    })
     navigation.goBack()
   }
 
@@ -61,11 +66,11 @@ const MyRecipesIngredientsQuantity = () => {
             )}
             keyboardType="decimal-pad"
           />
-          <View style={styles.unityMeasurementContainer}>
-            <Subheading>{t('unityMeasurement')}</Subheading>
+          <View style={styles.measurementContainer}>
+            <Subheading>{t('measurement')}</Subheading>
             <RadioButton.Group
-              onValueChange={setUnityMeasurement}
-              value={unityMeasurement}>
+              onValueChange={setmeasurement}
+              value={measurement}>
               {measurements &&
                 measurements.map((x, i) => (
                   <Fragment key={x._id}>
@@ -84,7 +89,7 @@ const MyRecipesIngredientsQuantity = () => {
         </View>
       </ScrollView>
       <FAB
-        visible={quantity && unityMeasurement}
+        visible={quantity && measurement}
         style={styles.fab}
         icon="check"
         color="#fff"
@@ -109,7 +114,7 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
   },
-  unityMeasurementContainer: {
+  measurementContainer: {
     marginTop: 20,
   },
 })

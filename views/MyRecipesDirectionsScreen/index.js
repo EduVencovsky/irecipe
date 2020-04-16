@@ -37,7 +37,7 @@ const MyRecipesDirections = () => {
   const { params = {} } = route || {}
   const { directions, onSave } = params
   const [selectedDirections, setSelectedDirections] = useState(
-    () => directions || [{ dragId: uuidv4(), value: '' }],
+    () => directions || [{ dragId: uuidv4(), direction: '' }],
   )
   const [hasChanged, setHasChanged] = useState(false)
   const [isActionsOpen, setIsActionsOpen] = useState(false)
@@ -72,7 +72,7 @@ const MyRecipesDirections = () => {
   }, [navigation, t, isActionsOpen])
 
   const handleSave = () => {
-    const notValid = selectedDirections.some((x) => !x.value || !x.value.trim())
+    const notValid = selectedDirections.some((x) => !x.direction || !x.direction.trim())
 
     if (notValid) {
       alert(t('directionsEmpty'))
@@ -94,7 +94,7 @@ const MyRecipesDirections = () => {
         x.dragId === dragId
           ? {
               ...x,
-              value: text,
+              direction: text,
             }
           : x,
       ),
@@ -106,7 +106,7 @@ const MyRecipesDirections = () => {
       <TextInput
         style={{ flex: 1 }}
         onChangeText={(text) => handleChangeText(text, item.dragId)}
-        value={item.value}
+        value={item.direction}
         label={`${t('direction')} ${index + 1}`}
         multiline
       />
@@ -142,7 +142,7 @@ const MyRecipesDirections = () => {
           <Button
             onPress={() =>
               setSelectedDirections((prev) =>
-                prev.concat({ dragId: uuidv4(), value: '' }),
+                prev.concat({ dragId: uuidv4(), direction: '' }),
               )
             }
             contentStyle={{ width: '100%', height: 50 }}
