@@ -72,7 +72,9 @@ const MyRecipesDirections = () => {
   }, [navigation, t, isActionsOpen])
 
   const handleSave = () => {
-    const notValid = selectedDirections.some((x) => !x.direction || !x.direction.trim())
+    const notValid = selectedDirections.some(
+      (x) => !x.direction || !x.direction.trim(),
+    )
 
     if (notValid) {
       alert(t('directionsEmpty'))
@@ -134,7 +136,13 @@ const MyRecipesDirections = () => {
           <DraggableFlatList
             data={selectedDirections}
             renderItem={renderItem}
-            keyExtractor={(item) => item.dragId.toString()}
+            keyExtractor={(item, i) =>
+              item.dragId
+                ? item.dragId.toString()
+                : item._id
+                ? item._id.toString()
+                : i
+            }
             onDragEnd={({ data }) => setSelectedDirections(data)}
           />
         </ScrollView>

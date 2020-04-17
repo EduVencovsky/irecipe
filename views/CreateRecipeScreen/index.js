@@ -12,11 +12,10 @@ import {
   useWindowDimensions,
   Keyboard,
   ScrollView,
-  KeyboardAvoidingView,
   Image,
 } from 'react-native'
 import { TabView, TabBar } from 'react-native-tab-view'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import {
   useTheme,
   FAB,
@@ -35,7 +34,7 @@ import * as Yup from 'yup'
 import MyRecipesIngredientsList from '../MyRecipesIngredientsListScreen'
 import MyRecipesAppliancesList from '../MyRecipesAppliancesListScreen'
 import { LanguageContext } from '../../context/LanguageContext'
-import { updateRecipe } from '../../services/recipe'
+import { updateRecipe, getRecipe } from '../../services/recipe'
 
 const initialLayout = { width: Dimensions.get('window').width }
 
@@ -55,8 +54,18 @@ const tabs = {
 const CreateRecipe = () => {
   const { t } = useContext(LanguageContext)
   const theme = useTheme()
+  const route = useRoute()
+  const { params = {} } = route
   const bottomSheetRef = useRef()
   const navigation = useNavigation()
+  const [initialValues, setInitialValues] = useState({
+    ingredients: [],
+    appliances: [],
+    directions: [],
+    time: '',
+    description: '',
+    name: '',
+  })
   const [index, setIndex] = useState(0)
   const [isSwiping, setIsSwiping] = useState(false)
   const [showCloseFab, setShowCloseFab] = useState(true)
@@ -67,15 +76,20 @@ const CreateRecipe = () => {
 
   const screenHeight = useWindowDimensions().height
 
+  useEffect(() => {
+    if (params._id) {
+      getRecipe(params._id)
+        .then((res) => {
+          console.log(JSON.stringify(res.data, null, 2))
+          setInitialValues(res.data)
+        })
+        .catch((res) => console.log(res.data))
+    }
+  }, [params._id])
+
   const formik = useFormik({
-    initialValues: {
-      ingredients: [],
-      appliances: [],
-      directions: [],
-      time: '',
-      description: '',
-      name: '',
-    },
+    enableReinitialize: true,
+    initialValues,
     validateOnChange: false,
     onSubmit: (values) =>
       updateRecipe(values)
@@ -264,7 +278,7 @@ const CreateRecipe = () => {
     <View style={styles.container}>
       <ScrollView style={styles.container}>
         <View style={styles.formContainer}>
-          <View style={styles.sections}>
+          {/* <View style={styles.sections}>
             {image ? (
               <>
                 <Image style={styles.image} source={image} />
@@ -288,7 +302,7 @@ const CreateRecipe = () => {
                 {t('selectImage')}
               </Button>
             )}
-          </View>
+          </View> */}
 
           <View style={styles.sections}>
             <TextInput
@@ -319,7 +333,7 @@ const CreateRecipe = () => {
 
           <View style={styles.sections}>
             <TextInput
-              value={values.time}
+              value={values.time.toString()}
               onChangeText={(text) => setFieldValue('time', text)}
               onBlur={() => setFieldTouched('time')}
               label={t('preparationTime')}

@@ -4,24 +4,27 @@ import { FAB, List, Avatar, Text, useTheme } from 'react-native-paper'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import { getMyRecipes } from '../../services/recipe'
+import { getRecipes } from '../../services/recipe'
 
-const MyRecipes = () => {
+const SearchScreen = () => {
   const navigation = useNavigation()
   const theme = useTheme()
   const [recipes, setRecipes] = useState([])
 
   useFocusEffect(
     useCallback(() => {
-      getMyRecipes()
-        .then((res) => setRecipes(res.data))
+      getRecipes()
+        .then((res) => {
+          console.log(JSON.stringify(res.data, null, 2))
+          setRecipes(res.data)
+        })
         .catch((res) => console.log('error', res.data))
     }, []),
   )
 
   const renderItem = ({ item }) => (
     <List.Item
-      onPress={() => navigation.navigate('createRecipe', { _id: item._id })}
+      onPress={() => navigation.navigate('recipe', { _id: item._id })}
       style={styles.listItem}
       title={item.name}
       description={() => (
@@ -71,7 +74,7 @@ const MyRecipes = () => {
       />
       <FAB
         style={styles.fab}
-        icon="plus"
+        icon="magnify"
         color="#fff"
         onPress={() => navigation.navigate('createRecipe')}
       />
@@ -108,4 +111,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default MyRecipes
+export default SearchScreen

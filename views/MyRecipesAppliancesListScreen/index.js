@@ -15,8 +15,8 @@ const MyRecipesAppliancesList = ({
   const theme = useTheme()
 
   const onSelectItem = (item) => {
-    setAppliances((prev) =>
-      prev.filter((x) => x._id.toString() !== item._id.toString()),
+    setAppliances(
+      appliances.filter((x) => x._id.toString() !== item._id.toString()),
     )
   }
 
@@ -42,6 +42,7 @@ const MyRecipesAppliancesList = ({
     )
   }
 
+  console.log('fail', appliances)
   return (
     <KeyboardAvoidingView style={styles.container}>
       {appliances.length > 0 ? (

@@ -21,7 +21,9 @@ import SplashScreen from './views/SplashScreen'
 import SignUpScreen from './views/SignUpScreen'
 import SignInScreen from './views/SignInScreen'
 import HomeScreen from './views/HomeScreen'
+import SearchScreen from './views/SearchScreen'
 import ProfileScreen from './views/ProfileScreen'
+import RecipeScreen from './views/RecipeScreen'
 import MyIngredientsScreen from './views/MyIngredientsScreen'
 import MyRecipesScreen from './views/MyRecipesScreen'
 import CreateRecipeScreen from './views/CreateRecipeScreen'
@@ -50,6 +52,11 @@ const AuthStacks = () => {
         name="myrecipes"
         options={{ headerTitle: t('myrecipes') }}
         component={MyRecipesScreen}
+      />
+      <AuthStack.Screen
+        name="recipe"
+        options={{ headerTitle: t('recipe') }}
+        component={RecipeScreen}
       />
       <AuthStack.Screen
         name="createRecipe"
@@ -114,7 +121,7 @@ const AuthTabs = () => {
       />
       <AuthTab.Screen
         name="search"
-        component={HomeScreen}
+        component={SearchScreen}
         options={{
           tabBarLabel: t('search'),
           tabBarIcon: ({ focused, color, size }) => (
