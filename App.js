@@ -55,7 +55,7 @@ const AuthStacks = () => {
       />
       <AuthStack.Screen
         name="recipe"
-        options={{ headerTitle: t('recipe') }}
+        options={{ headerTitle: '' }}
         component={RecipeScreen}
       />
       <AuthStack.Screen

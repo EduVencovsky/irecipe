@@ -20,7 +20,7 @@ import {
   useTheme,
   FAB,
   Divider,
-  TextInput,
+  Title,
   HelperText,
   Button,
   IconButton,
@@ -36,6 +36,7 @@ import AppliancesList from '../AppliancesListScreen'
 import DirectionsList from '../DirectionsListScreen'
 import { LanguageContext } from '../../context/LanguageContext'
 import { getRecipe } from '../../services/recipe'
+import colors from '../../utils/colors'
 
 const initialLayout = { width: Dimensions.get('window').width }
 
@@ -84,6 +85,12 @@ const CreateRecipe = () => {
         .catch((res) => console.log(res.data))
     }
   }, [params._id])
+
+  // useEffect(() => {
+  //   navigation.setOptions({
+  //     headerTitle: recipe.name,
+  //   })
+  // }, [navigation, recipe.name])
 
   const bottomSheetSnapTo = useCallback(
     (value) => {
@@ -186,13 +193,19 @@ const CreateRecipe = () => {
 
   return (
     <View style={styles.container}>
-      <ScrollView style={styles.container}>
-        <View style={styles.formContainer}>
-          <View style={styles.sections}>
-            <Text>{JSON.stringify(recipe, null, 2)}</Text>
-          </View>
+      <View style={styles.sections}>
+        <View style={{ backgroundColor: colors.primary3 }}>
+          <Title style={{ color: theme.colors.accent, textAlign: 'center', fontSize: 30, marginVertical: 20 }}>
+            {recipe.name ? recipe.name.toUpperCase() : ''}
+          </Title>
+          <Divider />
+          <Divider />
+          <Divider />
+          <Title style={{ textAlign: 'center', marginVertical: 20 }}>
+            {recipe.description}
+          </Title>
         </View>
-      </ScrollView>
+      </View>
       <View style={styles.bottomSheetHeaderDummy} />
       <BottomSheet
         initialSnap={0}
@@ -241,6 +254,10 @@ const styles = StyleSheet.create({
   },
   sections: {
     marginVertical: 5,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 20,
   },
 })
 

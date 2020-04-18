@@ -1,19 +1,9 @@
 import React, { useContext } from 'react'
-import { View, FlatList, StyleSheet, ScrollView } from 'react-native'
-import {
-  List,
-  Divider,
-  Text,
-  Paragraph,
-  useTheme,
-  Subheading,
-} from 'react-native-paper'
-import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
-
+import { View, StyleSheet, ScrollView } from 'react-native'
+import { Divider, Paragraph, Subheading } from 'react-native-paper'
 import { LanguageContext } from '../../context/LanguageContext'
 
 const DirectionsList = ({ directions }) => {
-  const theme = useTheme()
   const { t } = useContext(LanguageContext)
 
   return (
@@ -21,12 +11,13 @@ const DirectionsList = ({ directions }) => {
       <ScrollView>
         {directions &&
           directions.map((x, i) => (
-            <View style={styles.item}>
-              <Subheading>{`${t('direction')} ${i}`}</Subheading>
+            <View key={i} style={styles.item}>
+              <Subheading>{`${t('direction')} ${i + 1}`}</Subheading>
               <Divider />
               <Paragraph>{x.direction}</Paragraph>
             </View>
           ))}
+        <View style={styles.dummy} />
       </ScrollView>
     </View>
   )
@@ -37,7 +28,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     margin: 10,
   },
-
+  dummy: {
+    height: 100,
+  },
   item: {
     fontWeight: 'bold',
     fontSize: 20,
