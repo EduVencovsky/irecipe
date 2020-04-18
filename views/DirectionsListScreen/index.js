@@ -1,35 +1,33 @@
-import React from 'react'
-import { View, FlatList, StyleSheet } from 'react-native'
-import { List, Divider, Text, useTheme } from 'react-native-paper'
+import React, { useContext } from 'react'
+import { View, FlatList, StyleSheet, ScrollView } from 'react-native'
+import {
+  List,
+  Divider,
+  Text,
+  Paragraph,
+  useTheme,
+  Subheading,
+} from 'react-native-paper'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+
+import { LanguageContext } from '../../context/LanguageContext'
 
 const DirectionsList = ({ directions }) => {
   const theme = useTheme()
+  const { t } = useContext(LanguageContext)
+
   return (
     <View>
-      <FlatList
-        data={directions}
-        renderItem={({ item, index }) => (
-          <>
-            {!index && <Divider />}
-            <List.Item
-              titleStyle={styles.itemTitle}
-              title={item.direction}
-              left={(props) => (
-                <View style={styles.measurement}>
-                  <MaterialCommunityIcon
-                    size={25}
-                    color={theme.colors.primary}
-                    name="plus-circle-outline"
-                  />
-                </View>
-              )}
-            />
-            <Divider />
-          </>
-        )}
-        keyExtractor={(item) => item._id.toString()}
-      />
+      <ScrollView>
+        {directions &&
+          directions.map((x, i) => (
+            <View style={styles.item}>
+              <Subheading>{`${t('direction')} ${i}`}</Subheading>
+              <Divider />
+              <Paragraph>{x.direction}</Paragraph>
+            </View>
+          ))}
+      </ScrollView>
     </View>
   )
 }
@@ -37,10 +35,14 @@ const DirectionsList = ({ directions }) => {
 const styles = StyleSheet.create({
   measurement: {
     justifyContent: 'center',
+    margin: 10,
   },
-  itemTitle: {
+
+  item: {
     fontWeight: 'bold',
-    marginVertical: 10,
+    fontSize: 20,
+    margin: 10,
+    flex: 1,
   },
 })
 
