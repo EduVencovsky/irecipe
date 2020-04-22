@@ -194,7 +194,7 @@ const CreateRecipe = () => {
   return (
     <View style={styles.container}>
       <View style={styles.sections}>
-        <View style={{ backgroundColor: colors.primary3 }}>
+        <View style={{ backgroundColor: colors.primary3, width: '100%', margin: 10 }}>
           <Title style={{ color: theme.colors.accent, textAlign: 'center', fontSize: 30, marginVertical: 20 }}>
             {recipe.name ? recipe.name.toUpperCase() : ''}
           </Title>
@@ -204,6 +204,12 @@ const CreateRecipe = () => {
           <Title style={{ textAlign: 'center', marginVertical: 20 }}>
             {recipe.description}
           </Title>
+        </View>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Title style={{ textAlign: 'center', marginVertical: 20 }}>
+            {recipe.time}
+          </Title>
+          <IconButton icon="progress-clock" />
         </View>
       </View>
       <View style={styles.bottomSheetHeaderDummy} />

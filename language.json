@@ -318,5 +318,9 @@
   "preparationTime": {
     "en_US": "Preparation Time",
     "pt_BR": "Tempo de preparo"
+  },
+  "wrongLoginCredentias": {
+    "en_US": "Username or password wrong",
+    "pt_BR": "Usuário ou senha errados"
   }
 }

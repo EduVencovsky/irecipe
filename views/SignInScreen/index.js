@@ -10,6 +10,7 @@ import Button from '../../components/Button'
 import { InputFormik } from '../../components/Formik/TextInput'
 
 import { AuthContext } from '../../context/AuthContext'
+import { LanguageContext } from '../../context/LanguageContext'
 
 const initialValues = {
   username: '',
@@ -25,10 +26,14 @@ const SignInScreen = () => {
   const theme = useTheme()
   const [source, setSource] = useState({})
   const { signIn } = useContext(AuthContext)
+  const { t } = useContext(LanguageContext)
 
   const onSubmit = async (values) => {
     console.log(values)
-    await signIn(values)
+    await signIn(values).catch((res) => {
+      console.log(JSON.stringify(res, null, 2))
+      alert(t('wrongLoginCredentias'))
+    })
   }
 
   useEffect(() => {

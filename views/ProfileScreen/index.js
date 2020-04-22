@@ -56,8 +56,7 @@ const Profile = () => {
       <List.Item
         title={t('logout')}
         onPress={signOut}
-        left={(props) => <List.Icon {...props} icon="settings" />}
-        right={(props) => <List.Icon {...props} icon="chevron-right" />}
+        left={(props) => <List.Icon {...props} icon="logout" />}
       />
       <Divider />
     </View>
