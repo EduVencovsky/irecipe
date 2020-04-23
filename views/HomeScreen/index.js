@@ -1,10 +1,19 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
+import { Title, List, Divider, Subheading } from 'react-native-paper'
 
 const HomeScreen = () => {
   return (
-    <View>
-      <Text>Home</Text>
+    <View style={{ margin: 20 }}>
+      <Title>Trabalho Engenharia de Software 2</Title>
+      <Divider />
+      <Subheading>Participantes</Subheading>
+      <List.Item title="Eduardo Vencovsky 201710281" />
+      <List.Item title="Erick Domingos Modenez 201710299" />
+      <List.Item title="Igor Prata 201710277" />
+      <List.Item title="Leonardo Vencovsky 201710276" />
+      <List.Item title="Vitor Facioli 201710292" />
+      <List.Item title="Yan Trevizam 201710283" />
     </View>
   )
 }

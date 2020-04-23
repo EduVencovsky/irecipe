@@ -72,12 +72,12 @@ const SearchScreen = () => {
           item && item._id ? item._id.toString() : i.toString()
         }
       />
-      <FAB
+      {/* <FAB
         style={styles.fab}
         icon="magnify"
         color="#fff"
         onPress={() => navigation.navigate('createRecipe')}
-      />
+      /> */}
     </View>
   )
 }
