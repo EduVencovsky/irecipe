@@ -7,5 +7,7 @@
 
 - Se houver algum problema, tente achar o erro [nesse link](https://reactnative.dev/docs/troubleshooting#content)
 
-- Rodar o comando `yarn` e depois `yarn run android`
+- Rodar o comando `yarn` e depois `yarn run android` 
+  
+- Se falar que yarn não existe, install o yarn rodando o comando `npm install -g yarn`
 
