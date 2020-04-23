@@ -44,14 +44,14 @@ const Profile = () => {
         left={(props) => <List.Icon {...props} icon="stove" />}
         right={(props) => <List.Icon {...props} icon="chevron-right" />}
       />
-      <Divider />
+      {/* <Divider />
       <List.Item
         title={t('configuration')}
         description={t('configDescription')}
         onPress={() => navigation.navigate('configuration')}
         left={(props) => <List.Icon {...props} icon="settings" />}
         right={(props) => <List.Icon {...props} icon="chevron-right" />}
-      />
+      /> */}
       <Divider />
       <List.Item
         title={t('logout')}
