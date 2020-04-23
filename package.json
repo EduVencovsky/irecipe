@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "prestart": "adb reverse tcp:3000 tcp:3000",
+    "preandroid": "adb reverse tcp:3000 tcp:3000",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
